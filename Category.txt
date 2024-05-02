@@ -1,0 +1,2 @@
+Category ID: 1, Category Name: thien
+Category ID: 2, Category Name: hello
