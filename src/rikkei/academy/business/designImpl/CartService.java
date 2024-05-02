@@ -17,6 +17,7 @@ public class CartService implements ICartService {
         cart= IOFile.readFromFile(IOFile.CART_PATH);
     }
 
+
     //k
     @Override
     public void addProductToCart(Cart carts) {
@@ -45,9 +46,6 @@ public class CartService implements ICartService {
     public void displayOrderHistory() {
         // Implement logic to display order history
     }
-
-
-
 
 
 }

@@ -18,6 +18,8 @@ import static rikkei.academy.presentation.run.Main.*;
 
 public class ProductControl {
             static ProductService productService = new ProductService();
+            static Cart cart = new Cart();
+    static CartItem cartItem = new CartItem();
             static User user = new User();
         public static  void userMenu(){
 
@@ -49,7 +51,11 @@ public class ProductControl {
                 switch (choice) {
                     case 1:
                         productService.findAll();
-
+                        System.out.println("Nhap id");
+                        String productId = InputMethods.getString();
+                        System.out.println("nhap so luong");
+                        int quantity = InputMethods.getInteger();
+                        cart.addProductToCart(productId, quantity, productService);
                         break;
                     case 2:
                         System.out.println("Nhập tên sản phẩm: ");
@@ -61,6 +67,9 @@ public class ProductControl {
                             System.out.println("Không tìm thấy sản phẩm với tên đã cho.");
                         }
                         break;
+                    case 3:
+                        cart.displayCartItems();
+
                     case 0:
                         try {
                             PrintWriter writer = new PrintWriter(IOFile.USERLOGIN_PATH);

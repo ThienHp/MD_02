@@ -40,6 +40,14 @@ public class ProductService implements IProductService {
     public Product findById(String id) {
         return productList.stream().filter(e -> e.getProductId().equals(id)).findFirst().orElse(null);
     }
+    public Product findProductById(String productId) {
+        for (Product product : productList) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void save(Product product) {
