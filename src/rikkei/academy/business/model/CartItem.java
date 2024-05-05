@@ -1,37 +1,16 @@
 package rikkei.academy.business.model;
 
+import rikkei.academy.business.until.IOFile;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class CartItem implements Serializable {
-    private int cartItemId;
     private Product product;
-    private double price;
     private int quantity;
-    private boolean status;
-
-    public CartItem(  int cartItemId, Product product, double price, int quantity,boolean status) {
-
-        this.cartItemId = cartItemId;
-        this.product = product;
-        this.price = price;
-        this.quantity = quantity;
-        this.status = status;
-    }
-
     public CartItem(Product product, int quantity) {
-    }
-
-    public CartItem() {
-
-    }
-
-
-    public int getCartItemId() {
-        return cartItemId;
-    }
-
-    public void setCartItemId(int cartItemId) {
-        this.cartItemId = cartItemId;
+        this.product = product;
+        this.quantity = quantity;
     }
 
     public Product getProduct() {
@@ -40,14 +19,6 @@ public class CartItem implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public int getQuantity() {
@@ -60,12 +31,9 @@ public class CartItem implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s %s %s %s %s %s",
-                "Mã sản phẩm: ", cartItemId,
-                "Tên sản phẩm: ", product.getProductName(),
-                "Giá: ", price,
-                "Số lượng: ", quantity);
+        return
+                "quantity=" + quantity +
+                ", product=" + product.getProductName();
     }
-
 
 }

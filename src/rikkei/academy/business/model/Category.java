@@ -40,11 +40,9 @@ public class Category implements Serializable {
         this.categoryName= name;
         Category newCategory = new Category(categoryId, categoryName);
 
-        // Save the new category
-
-
         return newCategory;
     }
+
 
     @Override
     public String toString() {

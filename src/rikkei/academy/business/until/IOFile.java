@@ -3,6 +3,9 @@ package rikkei.academy.business.until;
 import rikkei.academy.business.model.User;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,8 @@ public class IOFile {
     public static final String PRODUCT_PATH = "src/rikkei/academy/business/data/Product.txt";
    public static final String CART_PATH = "src/rikkei/academy/business/data/CartUser.txt";
     public static final String USERLOGIN_PATH = "src/rikkei/academy/business/data/userLogin.txt";
+    public static final String ORDER_PATH = "src/rikkei/academy/business/data/Orders.txt";
+    public static final String CARTUSER_PATH = "src/rikkei/academy/business/data/CartUser/";
     public static <T> List<T> readFromFile(String path){
         File file = new File(path);
         FileInputStream fis = null;
@@ -73,4 +78,13 @@ public class IOFile {
         }
         return object;
     }
+    public static void deleteFile() {
+        Path path = Paths.get(USERLOGIN_PATH);
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            System.out.println("An error occurred while deleting the file: " + e.getMessage());
+        }
+    }
+
 }

@@ -194,16 +194,16 @@ public class Product implements Serializable{
 
     @Override
     public String toString() {
-        return String.format("productId=" + productId + '\'' +
-                ", productName='" + productName + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", discount=" + discount +
-                ", category ID=" + category.getCategoryId() +
-                ", category Name=" + category.getCategoryName() +
-                ", quantity=" + quantity +
-                ", manufacturer='" + manufacturer + '\'' +
-                ", status=" + (status ? "Đang bán" : "Ngừng bán") );
+        return String.format("ID :" + productId + '\'' +
+                ", Name : '" + productName + '\'' +
+                ", Mô tả : '" + description + '\'' +
+                ",\n Giá : " + discount +
+                ", danh mục : " + category.getCategoryName() +
+                ", Số lượng : " + getQuantity() +
+                ", Sản xuất : '" + manufacturer + '\'' +
+                ", Trạng thái :" + (status ? "Đang bán" : "Ngừng bán") ) +
+                "\n ======================================";
+
 
     }
 }

@@ -1,6 +1,8 @@
 package rikkei.academy.presentation.User.Admin;
 
+import rikkei.academy.business.until.IOFile;
 import rikkei.academy.business.until.InputMethods;
+import rikkei.academy.presentation.run.Main;
 
 import static rikkei.academy.presentation.run.Main.*;
 
@@ -8,6 +10,7 @@ public class Admin {
     CategoryManagement categoryManagement = new CategoryManagement();
     ProductManagement productManagement = new ProductManagement();
     UsersManagement usersManagement = new UsersManagement();
+    OrderManagement orderManagement = new OrderManagement();
    public void menuAdmin(){
 
        System.out.print("\u001B[H\u001B[2J");
@@ -23,8 +26,6 @@ public class Admin {
            System.out.println(ANSI_BLUE + "╠══════════════════════════════════════════════════════╣" + ANSI_RESET);
            System.out.println(ANSI_YELLOW + "║ 4. Quản lý đơn hàng                        ║" + ANSI_RESET);
            System.out.println(ANSI_BLUE + "╠══════════════════════════════════════════════════════╣" + ANSI_RESET);
-           System.out.println(ANSI_YELLOW + "║ 5. Thay đổi mật khẩu                       ║" + ANSI_RESET);
-           System.out.println(ANSI_BLUE + "╠══════════════════════════════════════════════════════╣" + ANSI_RESET);
            System.out.println(ANSI_RED + "║ 0. Đăng xuất                                         ║" + ANSI_RESET);
            System.out.println(ANSI_BLUE + "╚══════════════════════════════════════════════════════╝" + ANSI_RESET);
            System.out.print("Nhập số cần chọn tại đây:  ");
@@ -39,8 +40,14 @@ public class Admin {
                case 3:
                    usersManagement.userManagement();
                    break;
+               case 4:
+                   orderManagement.orderManagement();
+                   break;
                case 0 :
-                   System.out.println("Thoát thành công");
+                   IOFile.deleteFile();
+                   System.out.println("Đăng xuất thành công");
+                   Main.phone();
+
                    return;
                default:
                    System.out.println("vui long chon lai");

@@ -28,31 +28,35 @@ public class UserService implements IUserService {
     }
     @Override
     public User findById(Integer id) {
-        return (User) userList.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
+        return userList.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public User findId(String id) {
+        return userList.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
     }
     @Override
     public void save(User user) {
-        if (findById(user.getId()) != null) {
+        if (findById(Integer.parseInt(user.getId())) != null) {
             //cập nhật
-            userList.set(userList.indexOf(findById(user.getId())), user);
+            userList.set(userList.indexOf(findById(Integer.parseInt(user.getId()))), user);
         } else {
             //thêm mới
-            user.setId(getNewId());
+            user.setId(String.valueOf(getNewId()));
             userList.add(user);
-
         }
         //luu lai
         IOFile.writeToFile(IOFile.USERS_PATH, userList);
     }
-    public int getNewId(){
-        int idMax=0;
+    public String getNewId(){
+        int idMax = 0;
         for (User user : userList) {
-            if (user.getId()>idMax){
-                idMax= user.getId();
+            int userId = Integer.parseInt(user.getId());
+            if (userId > idMax){
+                idMax = userId;
             }
         }
-        idMax+=1;
-        return idMax;
+        idMax += 1;
+        return String.valueOf(idMax);
     }
     @Override
     public void deleteById(Integer id) {
@@ -94,13 +98,14 @@ public class UserService implements IUserService {
         return null;
     }
     public void changeUserStatus() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhập ID của người dùng cần thay đổi trạng thái:");
-        int userId = scanner.nextInt();
-        System.out.println("Nhập trạng thái mới (true = Đang hoạt động, false = Không hoạt động):");
-        boolean newStatus = scanner.nextBoolean();
 
-        User user = findById(userId);
+        System.out.println("Nhập ID của người dùng cần thay đổi trạng thái:");
+        String userId = InputMethods.getString();
+        System.out.println("Nhập trạng thái mới (true = Đang hoạt động, false = Không hoạt động):");
+        boolean newStatus = InputMethods.getBoolean();
+
+        User user = findId((userId));
+        System.out.println(user);
         if (user != null) {
             user.setStatus(newStatus);
             System.out.println("Đã thay đổi trạng thái của người dùng có ID: " + userId);
@@ -111,7 +116,7 @@ public class UserService implements IUserService {
         }
     }
     public void forgotPassword() {
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("Nhập email của bạn:");
         String email = InputMethods.getString();
         if (!UserValidator.validateEmail(email)) {
@@ -144,4 +149,5 @@ public class UserService implements IUserService {
         }
         return null;
     }
+
 }

@@ -10,7 +10,7 @@ public class UserValidator {
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^(?=.*[A-Z]).{4,}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^.{4,}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-zA-Z]{2,})$");
-
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{10,11}$");
     public static boolean validateUsername(String username) {
         return USERNAME_PATTERN.matcher(username).matches();
     }
@@ -30,6 +30,9 @@ public class UserValidator {
             }
         }
         return true;
+    }
+    public static boolean validatePhoneNumber(String phoneNumber) {
+        return PHONE_PATTERN.matcher(phoneNumber).matches();
     }
 
 }

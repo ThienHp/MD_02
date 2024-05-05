@@ -1,55 +1,49 @@
 package rikkei.academy.business.model;
 
-import rikkei.academy.business.designImpl.CartService;
-import rikkei.academy.business.designImpl.ProductService;
-import rikkei.academy.business.designImpl.UserService;
-import rikkei.academy.business.until.IOFile;
 import rikkei.academy.business.until.InputMethods;
 import rikkei.academy.business.until.UserValidator;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static rikkei.academy.business.model.UserRoles.USER;
 
 public class User implements Serializable {
-    private int id;
+    private String id;
     private String name;
     private String email;
     private String password;
     private UserRoles roles = USER;
     private boolean status = true;
-    private List<Cart> cart;
+    private Cart cart;
     private String invoiceNumber;
-    private LocalDate createdDate;
+
 
 
     public User() {
-
-    }
-    public User(int id, String name, String email, String password) {
-        this(id, name, email, password, UserRoles.ADMIN, true, LocalDate.now());
+        this.cart = new Cart();
     }
 
-    public User(int id, String name, String email, String password,UserRoles roles,boolean status,LocalDate createdDate) {
+    public User(String id, String name, String email, String password) {
+        this(id, name, email, password, UserRoles.ADMIN, true, new Cart());
+    }
+
+    public User(String id, String name, String email, String password, UserRoles roles, boolean status, Cart cart) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.roles=roles;
         this.status = status;
-        this.cart = new ArrayList<>();
+        this.cart = cart != null ? cart : new Cart();
         this.invoiceNumber = null;
-        this.createdDate = createdDate;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -93,11 +87,11 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public List<Cart> getCart() {
+    public Cart getCart() {
         return cart;
     }
 
-    public void setCart(List<Cart> cart) {
+    public void setCart(Cart cart) {
         this.cart = cart;
     }
 
@@ -148,9 +142,10 @@ public class User implements Serializable {
             }
         }
 
-        this.createdDate = LocalDate.now();
+
 
     }
+
 
     @Override
     public String toString() {
@@ -161,6 +156,18 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", status=" + statusString +
                 "} ";
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        User user = (User) obj;
+
+        return false;
     }
 
 

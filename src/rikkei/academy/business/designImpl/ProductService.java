@@ -26,15 +26,7 @@ public class ProductService implements IProductService {
         }
         return productList;
     }
-    public Product findByName(String name) {
-        // Giả sử bạn có một danh sách các sản phẩm
-        for (Product product : productList) {
-            if (product.getProductName().equals(name)) {
-                return product;
-            }
-        }
-        return null;
-    }
+
 
     @Override
     public Product findById(String id) {
@@ -99,5 +91,50 @@ public class ProductService implements IProductService {
         // Lưu lại danh sách sản phẩm
         IOFile.writeToFile(IOFile.PRODUCT_PATH, productList);
     }
+    public static boolean checkQuantity(String id, int quantity) {
+        Product product = productList.stream().filter(product1 -> product1.getProductId().equals(id)).findFirst().orElse(null);
+        if (product == null) {
+            return false;
+        }
+        // Kiểm tra số lượng tồn kho
+        return product.getQuantity() >= quantity;
+    }
+    public void reduceQuantity(String productId, int quantity) {
+
+        // Tìm sản phẩm trong danh sách sản phẩm dựa trên productId
+        Product product = findProductById(productId);
+        if (product != null) {
+            // Giảm số lượng sản phẩm
+            int currentQuantity = product.getQuantity();
+            if (currentQuantity >= quantity) {
+                product.setQuantity(currentQuantity - quantity);
+                IOFile.writeToFile(IOFile.PRODUCT_PATH, productList);
+            } else {
+                System.out.println("Không đủ số lượng sản phẩm " + product.getProductName() + " trong kho");
+            }
+        } else {
+            System.out.println("Không tìm thấy sản phẩm với ID: " + productId);
+        }
+    }
+    public List<Product> getProductsByCategory(String categoryName) {
+        List<Product> productsByCategory = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getCategory().getCategoryName().equals(categoryName)) {
+                productsByCategory.add(product);
+            }
+        }
+        return productsByCategory;
+    }
+    public List<Product> findByName(String name) {
+        List<Product> foundProducts = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getProductName().toLowerCase().contains(name.toLowerCase())) {
+                foundProducts.add(product);
+            }
+        }
+        return foundProducts;
+    }
+
+
 
 }

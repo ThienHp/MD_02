@@ -10,10 +10,13 @@ import rikkei.academy.presentation.User.Admin.Admin;
 import rikkei.academy.presentation.User.ProductControl;
 
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Main {
-    public static  UserService userService = new UserService();
+    public static UserService userService = new UserService();
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
@@ -25,11 +28,57 @@ public class Main {
     public static final String ANSI_PURPLE = "\u001B[35m";
 
 
-
     public static void main(String[] args) {
-        while (true){
-            // In khung đăng nhập với màu
-            // In khung đăng nhập với màu chữ và khung khác nhau
+
+        Path path = Paths.get(IOFile.USERLOGIN_PATH);
+        if (Files.exists(path)) {
+            ProductControl.userMenu();
+        } else {
+            phone();
+        }
+    }
+
+
+    public static void login() {
+        Admin adminUser = new Admin();
+        System.out.println(ANSI_BLUE + "Nhập Email đăng nhập");
+        String email = InputMethods.getString();
+        System.out.println(ANSI_BLUE + "nhập mật khẩu");
+        String mk = InputMethods.getString();
+        User userLogin = UserService.loginUser(email, mk);
+        User admin = new User("1234", "Admin Name", "admin@gmail.com", "admin");
+        if (email.equals(admin.getEmail()) && mk.equals(admin.getPassword())) {
+            userLogin = admin;
+            System.out.println("Đăng nhập Admin thành công");
+        }
+        //lưu thông tin người đăng nhập
+        if (userLogin == null) {
+            System.err.println("Tên đăng nhập hoặc mật khẩu không chính xác.");
+            return;
+        } else {
+            IOFile.writeToFile(IOFile.USERLOGIN_PATH, userLogin);
+        }
+        if (userLogin.isStatus()) {
+            switch (userLogin.getRoles()) {
+                case USER:
+                    ProductControl.userMenu();
+                    break;
+                case ADMIN:
+                    adminUser.menuAdmin();
+                    break;
+            }
+        }
+    }
+
+    public static void registerUser() {
+        System.out.println("nhập thông tin người dùng");
+        User newUser = new User();
+        newUser.inputUser(true);
+
+        userService.registerUser(newUser);
+    }
+    public static void phone(){
+        while (true) {
             System.out.println(ANSI_BRIGHT_BLACK + "╔════════════════════════╗" + ANSI_RESET);
             System.out.println(ANSI_BRIGHT_BLACK + "║" + ANSI_PURPLE + "       Của Hàng  Điện Thoại       " + ANSI_BRIGHT_BLACK + "║" + ANSI_RESET);
             System.out.println(ANSI_BRIGHT_BLACK + "╠════════════════════════╣" + ANSI_RESET);
@@ -44,7 +93,7 @@ public class Main {
             System.out.print("Nhập số cần chọn tại đây:  ");
 
             int choice = InputMethods.getInteger();
-            switch (choice){
+            switch (choice) {
                 case 1:
                     login();
                     break;
@@ -57,43 +106,5 @@ public class Main {
                     System.out.println("vui long chon lai");
             }
         }
-    }
-    public static void login( ) {
-        Admin adminUser = new Admin();
-        System.out.println(ANSI_BLUE+"Nhập Email đăng nhập");
-        String email = InputMethods.getString();
-        System.out.println(ANSI_BLUE+"nhập mật khẩu");
-        String mk = InputMethods.getString();
-        User userLogin = UserService.loginUser(email, mk);
-        User admin = new User(1234, "Admin Name", "admin@gmail.com", "admin");
-        if (email.equals(admin.getEmail()) && mk.equals(admin.getPassword())) {
-            userLogin = admin;
-            System.out.println("Đăng nhập Admin thành công");
-        }
-        //lưu thông tin người đăng nhập
-        if (userLogin == null) {
-            System.err.println("Tên đăng nhập hoặc mật khẩu không chính xác.");
-            return;
-        }
-        IOFile.writeToFile(IOFile.USERLOGIN_PATH, userLogin);
-        if (userLogin.isStatus()) {
-            switch (userLogin.getRoles()) {
-                case USER:
-                    ProductControl.userMenu();
-                    break;
-                case ADMIN:
-                    adminUser.menuAdmin();
-                    break;
-            }
-        }
-    }
-    public static void registerUser() {
-        System.out.println("nhập thông tin người dùng");
-        User newUser = new User();
-        newUser.inputUser(true);
-        //            tạo tài khoản admin
-//            newUser.setRole(UserRoles.ADMIN);
-
-        userService.registerUser(newUser);
     }
 }
